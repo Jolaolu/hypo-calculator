@@ -151,7 +151,6 @@ export default {
         return
       }
       setError(false)
-      console.log(getUserResponseQuery())
       emit('submit-user-response', getUserResponseQuery())
     }
     return {
@@ -217,6 +216,10 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-bottom: 3rem;
+
+    @include screen(custom, max, 576) {
+      flex-direction: column;
+    }
   }
 
   &-input {
@@ -225,9 +228,18 @@ export default {
 
       &:nth-of-type(even) {
         margin-left: 3rem;
+
+        @include screen(custom, max, 576) {
+          margin-left: 0;
+        }
       }
 
       &:nth-of-type(odd) {
+        @include screen(custom, max, 576) {
+          margin-right: 0;
+          margin-bottom: 3rem;
+        }
+
         margin-right: 3rem;
       }
     }
@@ -241,18 +253,35 @@ export default {
     display: flex;
     margin-top: 3rem;
 
+    @include screen(custom, max, 576) {
+      flex-direction: column;
+    }
+
     &_card {
       width: 50%;
       height: 12rem;
       font-size: 3rem;
       font-weight: bold;
 
+      @include screen(custom, max, 576) {
+        width: 100%;
+        margin-bottom: 2rem;
+      }
+
       &:nth-of-type(even) {
         margin-left: 2rem;
+
+        @include screen(custom, max, 576) {
+          margin-left: 0;
+        }
       }
 
       &:nth-of-type(odd) {
         margin-right: 2rem;
+
+        @include screen(custom, max, 576) {
+          margin-right: 0;
+        }
       }
 
       &-title {
@@ -264,7 +293,7 @@ export default {
   }
 
   .rate-btn {
-    width: 5rem;
+    width: 4rem;
   }
 }
 </style>

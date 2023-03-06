@@ -49,8 +49,7 @@ export default defineComponent( {
   color: $primary-text-color;
 
   @include screen(custom, max, 576) {
-    font-size: 0.5rem;
-    padding: 0.3rem;
+    font-size: 1.6rem;
   }
 
   &-wrapper {

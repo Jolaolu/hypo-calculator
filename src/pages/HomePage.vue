@@ -8,7 +8,8 @@
       <img src="/src/assets/loader.gif" alt="Loading" />
       <p>Hang on while we're running to get your results.</p>
     </article>
-    <mortgage-rates-table :mortgage-rates="results" v-if="currentStep === Step.Result && results" />
+    <mortgage-rates-table @go-back="updateStep(Step.Calculator)" :mortgage-rates="results"
+      v-if="currentStep === Step.Result && results" />
   </main>
 </template>
 <script lang="ts">
@@ -29,8 +30,8 @@ export default {
     MortgageRatesTable
   },
   setup() {
-    const currentStep = ref(Step.Result)
-    const results = ref<IRatesResponse["data"]["root"] | null>(rateResponse.data.root)
+    const currentStep = ref(Step.Calculator)
+    const results = ref<IRatesResponse["data"]["root"] | null>()
     const isLoading = ref<boolean>(true)
     const timeOut = ref<NodeJS.Timeout>()
 
@@ -45,13 +46,13 @@ export default {
       currentStep.value = step
     }
     const getLoanRates = async (userQuery: string): Promise<void> => {
-      console.log(userQuery)
       updateStep(Step.Loading)
       results.value = rateResponse.data.root
       timeOut.value = setTimeout(() => {
         updateStep(Step.Result)
       }, 3000)
 
+      // Note: i would do this if i were  communicating with the server
       /**
       await http
         .post('q', { payload: JSON.stringify({ query: userQuery }) })
@@ -66,9 +67,9 @@ export default {
         })
          */
     }
-      onBeforeUnmount(() => {
-        clearTimeout(timeOut.value)
-      })
+    onBeforeUnmount(() => {
+      clearTimeout(timeOut.value)
+    })
 
     return {
       currentStep,
@@ -82,9 +83,14 @@ export default {
 </script>
 <style lang="scss">
 .home {
-  padding: 10rem 15rem;
+  padding: 10rem 13rem;
   max-width: 120rem;
   margin: 0 auto;
+
+  @include screen(custom, max, 576) {
+    width: 100%;
+    padding: 4rem 1.5rem;
+  }
 }
 
 .loader {
