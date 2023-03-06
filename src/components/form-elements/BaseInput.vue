@@ -1,5 +1,5 @@
 <template>
-  <label class="input-label" :for="inputName">{{ label }}</label>
+  <label class="input-label" :for="inputName">{{ label }} <span v-if="required"> required*</span></label>
   <div class="input-wrapper" tabindex="0" :class="{ invalid: '' }">
     <div v-if="$slots.prefix">
       <slot name="prefix"></slot>
@@ -26,6 +26,10 @@ export default defineComponent( {
     },
     inputName: {
       type: String
+    },
+    required: {
+      type: Boolean,
+      default: false
     }
   },
   emits: [ 'update:modelValue' ]
@@ -72,6 +76,11 @@ export default defineComponent( {
   &-label {
     font-weight: 600;
     color: $seconday-text-color;
+
+    span {
+      font-size: .8rem;
+      color: $primary-color;
+    }
   }
 
   &-error {

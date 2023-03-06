@@ -15,14 +15,12 @@ export default defineConfig({
   server: {
     host: true,
     port: 8080,
-    open: true,
-    cors: true,
     strictPort: true,
     proxy: {
       '/api': {
-        target: 'https://hypofriend.de/',
+        target: 'https://hypofriend.de',
         changeOrigin: true,
-        rewrite: (path) => path.replace('/api/', '/'),
+        rewrite: (path) => path.replace('/^\/api/', ''),
       },
     },
   },

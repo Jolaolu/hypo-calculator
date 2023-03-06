@@ -3,7 +3,7 @@
     <div class="wrapper"></div>
   </header>
   <main class="home">
-    <mortgage-calculator v-if="currentStep === Step.Calculator" />
+    <mortgage-calculator @submit-user-response="getLoanRates" v-if="currentStep === Step.Calculator" />
     <article v-if="currentStep === Step.Loading"></article>
     <mortgage-rates-table v-if="currentStep === Step.Result" />
   </main>
@@ -11,6 +11,7 @@
 <script lang="ts">
 import { ref } from 'vue'
 import HttpService from '~/services/index'
+import type { IUserResponse } from '@/static/index.model'
 import MortgageCalculator from '~/pages/mortgage/MortgageCalculator.vue'
 import MortgageRatesTable from '~/pages/mortgage/MortgageRatesTable.vue'
 enum Step {
@@ -29,7 +30,7 @@ export default {
     const isLoading = ref<boolean>(true)
 
     const http = new HttpService({
-      baseUrl: '/api',
+      baseUrl: 'api',
       baseHeaders: {
         mode: 'no-cors'
       }
@@ -38,9 +39,10 @@ export default {
     const updateStep = (step: Step): void => {
       currentStep.value = step
     }
-    const getLoanRates = async (): Promise<void> => {
+    const getLoanRates = async (userQuery: IUserResponse ): Promise<void> => {
+      console.log(userQuery, userQuery)
       await http
-        .post('/q', {})
+        .post('q', {})
         .then((response): void => {
           isLoading.value = false
           console.log(response)
