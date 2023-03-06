@@ -5,19 +5,19 @@ $breakpoint-large: 1280;
 $breakpoint-desktop: 1440;
 
 @mixin screen($size, $type: max, $pixels: 600) {
-  @if $size == "mobile" {
+  @if $size == 'mobile' {
     @media screen and (max-width: $breakpoint-small + px) {
       @content;
     }
-  } @else if $size == "middle" {
+  } @else if $size == 'middle' {
     @media screen and (min-width: ($breakpoint-middle + 1) + px) and (max-width: $breakpoint-medium + px) {
       @content;
     }
-  } @else if $size == "desktop" {
+  } @else if $size == 'desktop' {
     @media screen and (min-width: $breakpoint-large + px) {
       @content;
     }
-  } @else if $size == "custom" {
+  } @else if $size == 'custom' {
     @media screen and ($type + -width: $pixels + px) {
       @content;
     }
