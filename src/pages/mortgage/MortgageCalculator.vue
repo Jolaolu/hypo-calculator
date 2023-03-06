@@ -41,15 +41,20 @@
       <p class="calculator-error" v-if="hasError"> Please enter all required fields</p>
     </form>
     <div class="calculator-info">
-      <content-card class="calculator-info_card"> {{ convertToCurrency(rawLoanAmount) }}</content-card>
-      <content-card class="calculator-info_card"> {{ convertToFixed(loanToValue) }}%</content-card>
+      <content-card class="calculator-info_card">
+        <p class="calculator-info_card-title">Implied loan</p>
+        {{ convertToCurrency(rawLoanAmount) }}
+      </content-card>
+      <content-card class="calculator-info_card">
+        <p class="calculator-info_card-title">Loan to value</p>
+        {{ convertToFixed(loanToValueFormatted) }}%
+      </content-card>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { computed, ref } from 'vue'
 import { mortgageTaxValues, fixation } from '@/static/store'
-import type { IUserResponse } from '@/static/index.model'
 import { isEmptyValue, convertToLocaleString, convertToCurrency, convertToFixed } from '~/helpers'
 import BaseInput from '~/components/form-elements/BaseInput.vue'
 import BaseButton from '~/components/form-elements/BaseButton.vue'
@@ -85,9 +90,11 @@ export default {
     const loanToValue = computed<number>(() => {
       return propertyPurchasePrice.value ? rawLoanAmount.value / propertyPurchasePrice.value : 0
     })
-
+    const loanToValueFormatted = computed<number>(() => {
+      return loanToValue.value * 100
+    })
     const notaryCosts = computed<number>(() => {
-      return propertyPurchasePrice.value ? 2144.0 + 0.013 * (propertyPurchasePrice.value - 100000.0) : 0
+      return propertyPurchasePrice.value ? (2144.0 + (0.013 * (propertyPurchasePrice.value - 100000.0))) : 0
     })
 
     const brokerCosts = computed<number>(() => {
@@ -123,21 +130,20 @@ export default {
       repaymentRate.value ? repaymentRate.value -= 1 : ''
     }
     const setError = (value: boolean): void => {
+      //better error handling  with maximum and minimums
       hasError.value = value
     }
-    const getUserResponseQuery = (): IUserResponse => {
-      return {
-        query: {
-          root: {
-            rates_table: {
-              property_price: propertyPurchasePrice.value!,
-              repayment: repaymentRate.value!,
-              loan_amount: rawLoanAmount.value!,
-              years_fixed: fixation
-            }
+    const getUserResponseQuery = (): string => {
+      return `query {
+        root {
+          rates_table {
+            property_price: ${propertyPurchasePrice.value!},
+            repayment: ${repaymentRate.value!},
+            loan_amount: ${rawLoanAmount.value!},
+            years_fixed: [${fixation}]
           }
         }
-      }
+      }`
     }
     const calculateLoan = (): void => {
       if (isSubmitButtonDisabled.value) {
@@ -145,6 +151,7 @@ export default {
         return
       }
       setError(false)
+      console.log(getUserResponseQuery())
       emit('submit-user-response', getUserResponseQuery())
     }
     return {
@@ -157,6 +164,7 @@ export default {
       incrementRate,
       includeRealEstateCommision,
       loanToValue,
+      loanToValueFormatted,
       propertyPurchasePrice,
       rawLoanAmount,
       repaymentRate,
@@ -245,6 +253,12 @@ export default {
 
       &:nth-of-type(odd) {
         margin-right: 2rem;
+      }
+
+      &-title {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: $seconday-text-color;
       }
     }
   }

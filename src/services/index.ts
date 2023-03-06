@@ -70,9 +70,9 @@ class HttpService {
       method: 'GET'
     })
   }
-  async post<T = unknown, S = null>(
+  async post<T = unknown, S = Record<string, any>>(
     url: string,
-    opts: Omit<IClientOpts<S>, 'method' | 'payload'>
+    opts: Omit<IClientOpts<S>, 'method'>
   ): Promise<T> {
     return this._constructClient<T, S>(url, {
       ...opts,

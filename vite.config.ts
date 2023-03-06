@@ -13,14 +13,18 @@ export default defineConfig({
     }
   },
   server: {
-    host: true,
     port: 8080,
-    strictPort: true,
     proxy: {
       '/api': {
         target: 'https://hypofriend.de',
         changeOrigin: true,
+        secure: false,
         rewrite: (path) => path.replace('/^\/api/', ''),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          "Accept-Language": "en,de;q=0.9,cs;q=0.8",
+          'foo': 'bar'
+        }
       },
     },
   },

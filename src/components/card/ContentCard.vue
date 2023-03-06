@@ -19,7 +19,6 @@
     &_wrapper {
       position: relative;
       height: 100%;
-      text-align: center;
       display: grid;
       align-items: center;
     }
