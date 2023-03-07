@@ -5,16 +5,15 @@
       <slot name="prefix"></slot>
     </div>
     <input required="true" :name="inputName" :value="modelValue" v-bind="$attrs" type="number" inputmode="numeric"
-      @input="$emit('update:modelValue', parseInt($event.target.value))" placeholder="" class="input"
-      autocomplete="none" />
+      @input="$emit('update:modelValue', parseInt(($event.target as HTMLInputElement).value))" placeholder=""
+      class="input" autocomplete="none" />
     <div v-if="$slots.suffix">
       <slot name="suffix"></slot>
     </div>
   </div>
 </template>
-<script>
-import { defineComponent } from 'vue'
-export default defineComponent( {
+<script lang="ts"  >
+export default {
   props: {
     modelValue: {
       type: Number,
@@ -25,15 +24,16 @@ export default defineComponent( {
       required: true
     },
     inputName: {
-      type: String
+      type: String,
+      default: ''
     },
     required: {
       type: Boolean,
       default: false
     }
   },
-  emits: [ 'update:modelValue' ]
-} )
+  emits: ['update:modelValue']
+}
 </script>
 
 <style lang="scss">
@@ -77,7 +77,7 @@ export default defineComponent( {
     color: $seconday-text-color;
 
     span {
-      font-size: .8rem;
+      font-size: 0.8rem;
       color: $primary-color;
     }
   }

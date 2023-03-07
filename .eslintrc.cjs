@@ -15,12 +15,7 @@ module.exports = {
         'cypress/e2e/**/*.{cy,spec}.{js,ts,jsx,tsx}',
         '**/*.vue', '**/*.ts'
       ],
-      pluigns: [ 'import', 'import-alias' ],
-      rules: {
-        'extends': [
-          'plugin:cypress/recommended'
-        ]
-      },
+      plugins: [ 'import', 'import-alias' ],
       rules: {
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/interface-name-prefix': 'off',

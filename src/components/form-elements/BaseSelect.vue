@@ -25,7 +25,7 @@ export default {
   },
   emits: ['update:modelValue'],
   setup(_, { emit }) {
-    const changeOption = ($event: Event) => {
+    const changeOption = ($event: Event):void => {
       const eventValue = ($event.target as HTMLInputElement).value
       if (!isEmptyValue(eventValue)) {
         emit('update:modelValue', JSON.parse(eventValue))

@@ -3,20 +3,26 @@
     <div class="wrapper"></div>
   </header>
   <main class="home">
-    <mortgage-calculator @submit-user-response="getLoanRates" v-if="currentStep === Step.Calculator" />
+    <mortgage-calculator
+      @submit-user-response="getLoanRates"
+      v-if="currentStep === Step.Calculator"
+    />
     <article class="loader" v-if="currentStep === Step.Loading">
       <img src="/src/assets/loader.gif" alt="Loading" />
       <p>Hang on while we're running to get your results.</p>
     </article>
-    <mortgage-rates-table @go-back="updateStep(Step.Calculator)" :mortgage-rates="results"
-      v-if="currentStep === Step.Result && results" />
+    <mortgage-rates-table
+      @go-back="updateStep(Step.Calculator)"
+      :mortgage-rates="results"
+      v-if="currentStep === Step.Result && results"
+    />
   </main>
 </template>
 <script lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
-import HttpService from '~/services/index'
+// import HttpService from '~/services/index'
 import { rateResponse } from '@/static/mock'
-import type { IRatesResponse } from "~/static/index.model"
+import type { IRatesResponse } from '~/static/index.model'
 import MortgageCalculator from '~/pages/mortgage/MortgageCalculator.vue'
 import MortgageRatesTable from '~/pages/mortgage/MortgageRatesTable.vue'
 enum Step {
@@ -31,24 +37,24 @@ export default {
   },
   setup() {
     const currentStep = ref(Step.Calculator)
-    const results = ref<IRatesResponse["data"]["root"] | null>()
+    const results = ref<IRatesResponse['data']['root'] | null>()
     const isLoading = ref<boolean>(true)
-    const timeOut = ref<NodeJS.Timeout>()
+    const timeOut = ref<number>()
 
-    const http = new HttpService({
-      baseUrl: 'api',
-      baseHeaders: {
-        mode: 'cors',
-      }
-    })
+    // const http = new HttpService({
+    //   baseUrl: 'api',
+    //   baseHeaders: {
+    //     mode: 'cors'
+    //   }
+    // })
 
     const updateStep = (step: Step): void => {
       currentStep.value = step
     }
-    const getLoanRates = async (userQuery: string): Promise<void> => {
+    const getLoanRates = async (): Promise<void> => {
       updateStep(Step.Loading)
       results.value = rateResponse.data.root
-      timeOut.value = setTimeout(() => {
+      timeOut.value = window.setTimeout(() => {
         updateStep(Step.Result)
       }, 3000)
 
@@ -74,6 +80,7 @@ export default {
     return {
       currentStep,
       getLoanRates,
+      isLoading,
       results,
       Step,
       updateStep

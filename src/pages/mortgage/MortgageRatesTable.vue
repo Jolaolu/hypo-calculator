@@ -2,14 +2,22 @@
   <table class="table">
     <thead class="table-head">
       <tr class="table-head__row">
-        <th class="table-head__item" v-for="(header, index) in tableHeader" :key="index">{{ header }}</th>
+        <th class="table-head__item" v-for="(header, index) in tableHeader" :key="index">
+          {{ header }}
+        </th>
       </tr>
     </thead>
     <tbody class="table-body">
-      <tr class="table-body__row" v-for="(rates, index)  in Object.keys(mortgageRates.ratesTable)" :key="index">
+      <tr
+        class="table-body__row"
+        v-for="(rates, index) in Object.keys(mortgageRates.ratesTable)"
+        :key="index"
+      >
         <td class="table-body__item">{{ rates }} Years</td>
         <td class="table-body__item">{{ mortgageRates.ratesTable[rates].monthlyRate }}€</td>
-        <td class="table-body__item">{{ convertToFixed(mortgageRates.ratesTable[rates].borrowingRate) }}%</td>
+        <td class="table-body__item">
+          {{ convertToFixed(mortgageRates.ratesTable[rates].borrowingRate) }}%
+        </td>
       </tr>
     </tbody>
   </table>
@@ -19,8 +27,8 @@
 </template>
 <script lang="ts">
 import { convertToFixed } from '~/helpers'
-import { tableHeader } from '@/static/store';
-import BaseButton from '@/components/form-elements/BaseButton.vue';
+import { tableHeader } from '@/static/store'
+import BaseButton from '@/components/form-elements/BaseButton.vue'
 export default {
   emits: ['go-back'],
   components: {
@@ -29,7 +37,7 @@ export default {
   props: {
     mortgageRates: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   setup() {

@@ -19,7 +19,7 @@ export default defineConfig({
         target: 'https://hypofriend.de',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace('/^\/api/', ''),
+        rewrite: (path) => path.replace('/^/api/', ''),
         headers: {
           'Access-Control-Allow-Origin': '*',
           "Accept-Language": "en,de;q=0.9,cs;q=0.8",

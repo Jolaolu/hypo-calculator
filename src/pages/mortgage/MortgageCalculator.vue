@@ -4,28 +4,49 @@
       <h1 class="calculator-header">Mortgage Calculator</h1>
       <section class="calculator-form_section">
         <div class="calculator-input_wrapper">
-          <base-input :required="true" label="Property purchase price" ref="purchase-price"
-            inputName="purchasePrice" @update:modelValue="(newValue: number) => (propertyPurchasePrice = newValue)"
-            :modelValue="propertyPurchasePrice">
+          <base-input
+            :required="true"
+            label="Property purchase price"
+            ref="purchase-price"
+            inputName="purchasePrice"
+            @update:modelValue="(newValue: number) => (propertyPurchasePrice = newValue)"
+            :modelValue="propertyPurchasePrice"
+          >
             <template #prefix> <span>€</span> </template>
           </base-input>
         </div>
         <div class="calculator-input_wrapper">
-          <base-input :required="true" ref="total-savings" inputName="totalSavings" label="Total Savings"
-            @update:modelValue="(newValue: number) => (totalSavings = newValue)" :modelValue="totalSavings">
+          <base-input
+            :required="true"
+            ref="total-savings"
+            inputName="totalSavings"
+            label="Total Savings"
+            @update:modelValue="(newValue: number) => (totalSavings = newValue)"
+            :modelValue="totalSavings"
+          >
             <template #prefix> <span>€</span> </template>
           </base-input>
         </div>
       </section>
       <section class="calculator-form_section">
         <div class="calculator-input_wrapper">
-          <base-select ref="commision" label="Real estate commision" :modelValue="includeRealEstateCommision"
-            @update:modelValue="(newValue: boolean) => (includeRealEstateCommision = newValue)" />
+          <base-select
+            ref="commision"
+            label="Real estate commision"
+            :modelValue="includeRealEstateCommision"
+            @update:modelValue="(newValue: boolean) => (includeRealEstateCommision = newValue)"
+          />
         </div>
         <div class="calculator-input_wrapper">
-          <base-input :required="true" class="calculator-input_interest" ref="repayment-rate" inputName="repaymentRate"
-            label="Annual repayment rate(%)" @update:modelValue="(newValue: number) => (repaymentRate = newValue)"
-            :modelValue="repaymentRate">
+          <base-input
+            :required="true"
+            class="calculator-input_interest"
+            ref="repayment-rate"
+            inputName="repaymentRate"
+            label="Annual repayment rate(%)"
+            @update:modelValue="(newValue: number) => (repaymentRate = newValue)"
+            :modelValue="repaymentRate"
+          >
             <template #prefix>
               <decrement-button @decrement="decrementRate" />
             </template>
@@ -36,9 +57,11 @@
         </div>
       </section>
       <section class="calculator-button_wrapper">
-        <base-button ref="calculate" class="calculator-button" @click="calculateLoan">Calculate</base-button>
+        <base-button ref="calculate" class="calculator-button" @click="calculateLoan"
+          >Calculate</base-button
+        >
       </section>
-      <p class="calculator-error" v-if="hasError"> Please enter all required fields</p>
+      <p class="calculator-error" v-if="hasError">Please enter all required fields</p>
     </form>
     <div class="calculator-info">
       <content-card ref="implied-loan" :value="rawLoanAmount" class="calculator-info_card">
@@ -94,18 +117,24 @@ export default {
       return loanToValue.value * 100
     })
     const notaryCosts = computed<number>(() => {
-      return propertyPurchasePrice.value ? (2144.0 + (0.013 * (propertyPurchasePrice.value - 100000.0))) : 0
+      return propertyPurchasePrice.value
+        ? 2144.0 + 0.013 * (propertyPurchasePrice.value - 100000.0)
+        : 0
     })
 
     const brokerCosts = computed<number>(() => {
       if (includeRealEstateCommision.value) {
-        return propertyPurchasePrice.value ? mortgageTaxValues.BROKER_TAX * propertyPurchasePrice.value : 0
+        return propertyPurchasePrice.value
+          ? mortgageTaxValues.BROKER_TAX * propertyPurchasePrice.value
+          : 0
       }
       return 0
     })
 
     const stampDutyCost = computed<number>(() => {
-      return propertyPurchasePrice.value ? mortgageTaxValues.CITY_TAX * propertyPurchasePrice.value : 0
+      return propertyPurchasePrice.value
+        ? mortgageTaxValues.CITY_TAX * propertyPurchasePrice.value
+        : 0
     })
 
     const totalCost = computed<number>(() => {
@@ -113,7 +142,9 @@ export default {
     })
 
     const rawLoanAmount = computed<number>(() => {
-      return totalSavings.value && propertyPurchasePrice.value ? totalCost.value - totalSavings.value + propertyPurchasePrice.value : 0
+      return totalSavings.value && propertyPurchasePrice.value
+        ? totalCost.value - totalSavings.value + propertyPurchasePrice.value
+        : 0
     })
 
     const incrementRate = (): void => {
@@ -127,7 +158,7 @@ export default {
       if (repaymentRate.value === 0) {
         return
       }
-      repaymentRate.value ? repaymentRate.value -= 1 : ''
+      repaymentRate.value ? (repaymentRate.value -= 1) : ''
     }
     const setError = (value: boolean): void => {
       //better error handling  with maximum and minimums

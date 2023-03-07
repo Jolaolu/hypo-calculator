@@ -8,6 +8,4 @@ export const selectOptions = [
 ]
 export const fixation = [5, 10, 15, 20, 25, 30]
 
-export const tableHeader = [
-  'Fixation length', 'Monthly rate', 'Interest rate'
-]
+export const tableHeader = ['Fixation length', 'Monthly rate', 'Interest rate']
