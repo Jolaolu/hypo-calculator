@@ -4,14 +4,14 @@
       <h1 class="calculator-header">Mortgage Calculator</h1>
       <section class="calculator-form_section">
         <div class="calculator-input_wrapper">
-          <base-input :required="true" class="" label="Property purchase price" inputName="purchasePrice"
-            @update:modelValue="(newValue: number) => (propertyPurchasePrice = newValue)"
+          <base-input :required="true" label="Property purchase price" ref="purchase-price"
+            inputName="purchasePrice" @update:modelValue="(newValue: number) => (propertyPurchasePrice = newValue)"
             :modelValue="propertyPurchasePrice">
             <template #prefix> <span>€</span> </template>
           </base-input>
         </div>
         <div class="calculator-input_wrapper">
-          <base-input :required="true" inputName="totalSavings" label="Total Savings" class=""
+          <base-input :required="true" ref="total-savings" inputName="totalSavings" label="Total Savings"
             @update:modelValue="(newValue: number) => (totalSavings = newValue)" :modelValue="totalSavings">
             <template #prefix> <span>€</span> </template>
           </base-input>
@@ -19,11 +19,11 @@
       </section>
       <section class="calculator-form_section">
         <div class="calculator-input_wrapper">
-          <base-select label="Real estate commision" :modelValue="includeRealEstateCommision"
+          <base-select ref="commision" label="Real estate commision" :modelValue="includeRealEstateCommision"
             @update:modelValue="(newValue: boolean) => (includeRealEstateCommision = newValue)" />
         </div>
         <div class="calculator-input_wrapper">
-          <base-input :required="true" class="calculator-input_interest" inputName="repaymentRate"
+          <base-input :required="true" class="calculator-input_interest" ref="repayment-rate" inputName="repaymentRate"
             label="Annual repayment rate(%)" @update:modelValue="(newValue: number) => (repaymentRate = newValue)"
             :modelValue="repaymentRate">
             <template #prefix>
@@ -36,16 +36,16 @@
         </div>
       </section>
       <section class="calculator-button_wrapper">
-        <base-button class="calculator-button" @click="calculateLoan">Calculate</base-button>
+        <base-button ref="calculate" class="calculator-button" @click="calculateLoan">Calculate</base-button>
       </section>
       <p class="calculator-error" v-if="hasError"> Please enter all required fields</p>
     </form>
     <div class="calculator-info">
-      <content-card class="calculator-info_card">
+      <content-card ref="implied-loan" :value="rawLoanAmount" class="calculator-info_card">
         <p class="calculator-info_card-title">Implied loan</p>
         {{ convertToCurrency(rawLoanAmount) }}
       </content-card>
-      <content-card class="calculator-info_card">
+      <content-card ref="loan-to-value" :value="loanToValueFormatted" class="calculator-info_card">
         <p class="calculator-info_card-title">Loan to value</p>
         {{ convertToFixed(loanToValueFormatted) }}%
       </content-card>
@@ -162,7 +162,6 @@ export default {
       hasError,
       incrementRate,
       includeRealEstateCommision,
-      loanToValue,
       loanToValueFormatted,
       propertyPurchasePrice,
       rawLoanAmount,

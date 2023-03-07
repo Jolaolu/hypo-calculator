@@ -52,7 +52,7 @@ export default {
         updateStep(Step.Result)
       }, 3000)
 
-      // Note: i would do this if i were  communicating with the server
+      // Note: i would do this if i were  communicating with the backend server
       /**
       await http
         .post('q', { payload: JSON.stringify({ query: userQuery }) })
